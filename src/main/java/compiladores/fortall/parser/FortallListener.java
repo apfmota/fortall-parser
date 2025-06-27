@@ -1,6 +1,5 @@
 // Generated from Fortall.g4 by ANTLR 4.13.2
 package compiladores.fortall.parser;
-
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -129,6 +128,16 @@ public interface FortallListener extends ParseTreeListener {
 	 */
 	void exitValores_string(FortallParser.Valores_stringContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link FortallParser#valor_string}.
+	 * @param ctx the parse tree
+	 */
+	void enterValor_string(FortallParser.Valor_stringContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FortallParser#valor_string}.
+	 * @param ctx the parse tree
+	 */
+	void exitValor_string(FortallParser.Valor_stringContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link FortallParser#mais_valores_string}.
 	 * @param ctx the parse tree
 	 */
@@ -198,6 +207,16 @@ public interface FortallListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExpressao(FortallParser.ExpressaoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link FortallParser#expressao_aritmetica}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpressao_aritmetica(FortallParser.Expressao_aritmeticaContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link FortallParser#expressao_aritmetica}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpressao_aritmetica(FortallParser.Expressao_aritmeticaContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link FortallParser#expressao_logica}.
 	 * @param ctx the parse tree

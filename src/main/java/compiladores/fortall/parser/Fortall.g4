@@ -24,7 +24,10 @@ comando : escrita
     | loop
     ;
 escrita : ESCREVER AP valores_string FP ;
-valores_string : VALOR_STRING mais_valores_string ;
+valores_string : valor_string mais_valores_string ;
+valor_string : STRING 
+    | expressao
+    ;
 mais_valores_string : VR valores_string
     |
     ;
@@ -37,7 +40,8 @@ senao : SENAO se
     ;
 loop : ENQUANTO expressao_logica FACA comandos FIM ;
 
-expressao : aritmetica fator ;
+expressao : expressao_aritmetica | expressao_logica ;
+expressao_aritmetica : aritmetica fator ;
 expressao_logica : aritmetica relacao ;
 relacao : EQ aritmetica
     | NE aritmetica
@@ -99,7 +103,7 @@ DIV : '/' ;
 
 // tokens variaveis
 
-VALOR_STRING : '"' (~["\r\n])* '"' ;
+STRING : '"' (~["\r\n])* '"' ;
 ID : [a-zA-Z][a-zA-Z0-9]* ;
 NUM : [0-9]+ ;
 

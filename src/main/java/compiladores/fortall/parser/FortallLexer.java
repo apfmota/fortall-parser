@@ -1,6 +1,5 @@
 // Generated from Fortall.g4 by ANTLR 4.13.2
 package compiladores.fortall.parser;
-
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -21,7 +20,7 @@ public class FortallLexer extends Lexer {
 		ATR=1, AP=2, FP=3, VR=4, PV=5, DP=6, VAR=7, PROGRAMA=8, TIPO=9, INICIO=10, 
 		FIM=11, ESCREVER=12, LER=13, SE=14, ENTAO=15, SENAO=16, ENQUANTO=17, FACA=18, 
 		EQ=19, NE=20, GT=21, GE=22, LT=23, LE=24, MAIS=25, MENOS=26, MULT=27, 
-		DIV=28, VALOR_STRING=29, ID=30, NUM=31, WS=32;
+		DIV=28, STRING=29, ID=30, NUM=31, WS=32;
 	public static String[] channelNames = {
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 	};
@@ -34,7 +33,7 @@ public class FortallLexer extends Lexer {
 		return new String[] {
 			"ATR", "AP", "FP", "VR", "PV", "DP", "VAR", "PROGRAMA", "TIPO", "INICIO", 
 			"FIM", "ESCREVER", "LER", "SE", "ENTAO", "SENAO", "ENQUANTO", "FACA", 
-			"EQ", "NE", "GT", "GE", "LT", "LE", "MAIS", "MENOS", "MULT", "DIV", "VALOR_STRING", 
+			"EQ", "NE", "GT", "GE", "LT", "LE", "MAIS", "MENOS", "MULT", "DIV", "STRING", 
 			"ID", "NUM", "WS"
 		};
 	}
@@ -54,7 +53,7 @@ public class FortallLexer extends Lexer {
 			null, "ATR", "AP", "FP", "VR", "PV", "DP", "VAR", "PROGRAMA", "TIPO", 
 			"INICIO", "FIM", "ESCREVER", "LER", "SE", "ENTAO", "SENAO", "ENQUANTO", 
 			"FACA", "EQ", "NE", "GT", "GE", "LT", "LE", "MAIS", "MENOS", "MULT", 
-			"DIV", "VALOR_STRING", "ID", "NUM", "WS"
+			"DIV", "STRING", "ID", "NUM", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();

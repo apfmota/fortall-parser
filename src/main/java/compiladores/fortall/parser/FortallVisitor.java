@@ -1,6 +1,5 @@
 // Generated from Fortall.g4 by ANTLR 4.13.2
 package compiladores.fortall.parser;
-
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -84,6 +83,12 @@ public interface FortallVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitValores_string(FortallParser.Valores_stringContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link FortallParser#valor_string}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitValor_string(FortallParser.Valor_stringContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link FortallParser#mais_valores_string}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -125,6 +130,12 @@ public interface FortallVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitExpressao(FortallParser.ExpressaoContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FortallParser#expressao_aritmetica}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpressao_aritmetica(FortallParser.Expressao_aritmeticaContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link FortallParser#expressao_logica}.
 	 * @param ctx the parse tree

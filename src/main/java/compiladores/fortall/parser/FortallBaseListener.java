@@ -1,6 +1,5 @@
 // Generated from Fortall.g4 by ANTLR 4.13.2
 package compiladores.fortall.parser;
-
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -161,6 +160,18 @@ public class FortallBaseListener implements FortallListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterValor_string(FortallParser.Valor_stringContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitValor_string(FortallParser.Valor_stringContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMais_valores_string(FortallParser.Mais_valores_stringContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -240,6 +251,18 @@ public class FortallBaseListener implements FortallListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExpressao(FortallParser.ExpressaoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExpressao_aritmetica(FortallParser.Expressao_aritmeticaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpressao_aritmetica(FortallParser.Expressao_aritmeticaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

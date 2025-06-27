@@ -7,8 +7,9 @@ import org.antlr.v4.runtime.tree.ParseTree;
 public class App {
     public static void main(String[] args) throws Exception {
         String input = "programa codiguinho; \n" +
+                "var numero, valor, contador : inteiro; condicao : lógico; \n" +
                 "início" +
-                "escrever(\"oi\"); \n" +
+                "escrever(\"oi\", \" Alou\"); \n" +
                 "a := 1 + 1 - (23); \n" +
                 "fim \n";
         FortallLexer lexer = new FortallLexer(CharStreams.fromString(input));
@@ -16,7 +17,7 @@ public class App {
         FortallParser parser = new FortallParser(tokens);
         ParseTree tree = parser.programa();
 
-        FortallBaseVisitor fortallBaseVisitor = new FortallBaseVisitor<>();
-        fortallBaseVisitor.visit(tree);
+        FortallVisitor_V1 fortallVisitorV1 = new FortallVisitor_V1();
+        fortallVisitorV1.visit(tree);
     }
 }
