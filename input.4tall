@@ -2,8 +2,11 @@ programa programaTeste;
 var numero, contador, soma: inteiro;
 início
     contador := 0;
-    enquanto contador < 5 faça
+    enquanto contador < naoDeclarado faça
         contador := contador + 1;
         escrever("somei ", contador);
-    fim
+    fim;
+    se contador < 0 então
+        escrever("loop rodou");
+    fim;
 fim

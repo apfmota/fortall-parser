@@ -15,8 +15,13 @@ public class App {
             FortallParser parser = new FortallParser(tokens);
             ParseTree tree = parser.programa();
 
-            FortallVisitor_V1 fortallVisitorV1 = new FortallVisitor_V1();
-            fortallVisitorV1.visit(tree);
+            FortallVisitor_V1 fortallVisitorV1 = new FortallVisitor_V1(System.in);
+
+            try {
+                fortallVisitorV1.visit(tree);
+            } catch (RuntimeException runtimeException) {
+                System.out.println("Erro ao executar: " + runtimeException.getMessage());
+            }
         } else {
             System.out.println("Informe nome do arquivo contendo código fonte em fortall");
         }

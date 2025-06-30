@@ -4,12 +4,18 @@ package compiladores.fortall.parser;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
+import java.io.InputStream;
 import java.util.*;
 
 @SuppressWarnings("CheckReturnValue")
 public class FortallVisitor_V1 extends FortallBaseVisitor<Object> {
 
 	private Map<String, Variavel> variaveis = new HashMap<>();
+	private final Scanner scanner;
+
+	public FortallVisitor_V1 (InputStream inputStream) {
+		scanner = new Scanner(inputStream);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -182,7 +188,6 @@ public class FortallVisitor_V1 extends FortallBaseVisitor<Object> {
 		if (variavel != null) {
 			Integer valor = (Integer) visitExpressao(ctx.expressao());
 			variavel.setValor(valor);
-			System.out.println("Valor \"" + valor + "\" atribuído a \"" + variavel.getId() +"\"");
 		} else {
 			throw new RuntimeException("Variável \"" + ctx.ID().getText() + "\" não declarada");
 		}
@@ -194,14 +199,28 @@ public class FortallVisitor_V1 extends FortallBaseVisitor<Object> {
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public Object visitSe(FortallParser.SeContext ctx) { return visitChildren(ctx); }
+	@Override public Object visitSe(FortallParser.SeContext ctx) {
+		if ((Integer) visitExpressao(ctx.expressao()) == 1) {
+			visitComandos(ctx.comandos());
+		} else if (ctx.senao() != null) {
+			visitSenao(ctx.senao());
+		}
+		return null;
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public Object visitSenao(FortallParser.SenaoContext ctx) { return visitChildren(ctx); }
+	@Override public Object visitSenao(FortallParser.SenaoContext ctx) {
+		if (ctx.se() != null) {
+			visitSe(ctx.se());
+		} else if (ctx.SENAO() != null) {
+			visitComandos(ctx.comandos());
+		}
+		return null;
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -312,7 +331,7 @@ public class FortallVisitor_V1 extends FortallBaseVisitor<Object> {
 		} else if (ctx.ID() != null) {
 			Variavel variavel = variaveis.get(ctx.ID().getText());
 			if (variavel == null) {
-				throw new RuntimeException("Variável \"" + ctx.ID().getText() + "\"");
+				throw new RuntimeException("Variável \"" + ctx.ID().getText() + "\" não declarada");
 			}
 			return variavel.getValor();
 		} else {
