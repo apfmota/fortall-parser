@@ -33,12 +33,12 @@ mais_valores_string : VR valores_string
     ;
 leitura : LER AP ids FP ;
 atribuicao : ID ATR expressao ;
-se : SE expressao_logica ENTAO comandos senao FIM ;
+se : SE expressao ENTAO comandos senao FIM ;
 senao : SENAO se
     | SENAO comandos
     |
     ;
-loop : ENQUANTO expressao_logica FACA comandos FIM ;
+loop : ENQUANTO expressao FACA comandos FIM ;
 
 expressao : expressao_aritmetica | expressao_logica ;
 expressao_aritmetica : aritmetica fator ;

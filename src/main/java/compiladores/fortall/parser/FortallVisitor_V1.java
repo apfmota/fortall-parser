@@ -1,6 +1,7 @@
 // Generated from Fortall.g4 by ANTLR 4.13.2
 package compiladores.fortall.parser;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 import java.util.*;
@@ -127,7 +128,7 @@ public class FortallVisitor_V1 extends FortallBaseVisitor<Object> {
 	@Override public Object visitEscrita(FortallParser.EscritaContext ctx) {
 		List<String> valores = (List<String>) visitValores_string(ctx.valores_string());
 		for (String valor: valores) {
-			System.out.print(valor.substring(1, valor.length() - 1));
+			System.out.print(valor);
 		}
 		return null;
 	}
@@ -176,7 +177,17 @@ public class FortallVisitor_V1 extends FortallBaseVisitor<Object> {
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public Object visitAtribuicao(FortallParser.AtribuicaoContext ctx) { return visitChildren(ctx); }
+	@Override public Object visitAtribuicao(FortallParser.AtribuicaoContext ctx) {
+		Variavel variavel = variaveis.get(ctx.ID().getText());
+		if (variavel != null) {
+			Integer valor = (Integer) visitExpressao(ctx.expressao());
+			variavel.setValor(valor);
+			System.out.println("Valor \"" + valor + "\" atribuído a \"" + variavel.getId() +"\"");
+		} else {
+			throw new RuntimeException("Variável \"" + ctx.ID().getText() + "\" não declarada");
+		}
+		return null;
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -197,21 +208,38 @@ public class FortallVisitor_V1 extends FortallBaseVisitor<Object> {
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public Object visitLoop(FortallParser.LoopContext ctx) { return visitChildren(ctx); }
+	@Override public Object visitLoop(FortallParser.LoopContext ctx) {
+		Integer resultadoExpressao = (Integer) visitExpressao(ctx.expressao());
+		while (resultadoExpressao == 1) {
+			visitComandos(ctx.comandos());
+			resultadoExpressao = (Integer) visitExpressao(ctx.expressao());
+		}
+		return null;
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public Object visitExpressao(FortallParser.ExpressaoContext ctx) { return visitChildren(ctx); }
+	@Override public Object visitExpressao(FortallParser.ExpressaoContext ctx) {
+		if (ctx.expressao_aritmetica() != null) {
+			return visitExpressao_aritmetica(ctx.expressao_aritmetica());
+		} else {
+			Boolean valor = (Boolean) visitExpressao_logica(ctx.expressao_logica());
+			return valor ? 1 : 0;
+		}
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public Object visitExpressao_logica(FortallParser.Expressao_logicaContext ctx) { return visitChildren(ctx); }
+	@Override public Object visitExpressao_logica(FortallParser.Expressao_logicaContext ctx) {
+		Integer valor = (Integer) visitAritmetica(ctx.aritmetica());
+		return resolveRelacao(ctx.relacao(), valor);
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -225,7 +253,13 @@ public class FortallVisitor_V1 extends FortallBaseVisitor<Object> {
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public Object visitAritmetica(FortallParser.AritmeticaContext ctx) { return visitChildren(ctx); }
+	@Override public Object visitAritmetica(FortallParser.AritmeticaContext ctx) {
+		Integer valor = (Integer) visitPrecedente(ctx.precedente());
+		if (ctx.termo() != null) {
+			return resolveTermo(ctx.termo(), valor);
+		}
+		return valor;
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -239,7 +273,13 @@ public class FortallVisitor_V1 extends FortallBaseVisitor<Object> {
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public Object visitPrecedente(FortallParser.PrecedenteContext ctx) { return visitChildren(ctx); }
+	@Override public Object visitPrecedente(FortallParser.PrecedenteContext ctx) {
+		Integer valor = (Integer) visitSinalizador(ctx.sinalizador());
+		if (ctx.fator() != null) {
+			return resolveFator(ctx.fator(), valor);
+		}
+		return valor;
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -253,12 +293,102 @@ public class FortallVisitor_V1 extends FortallBaseVisitor<Object> {
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public Object visitSinalizador(FortallParser.SinalizadorContext ctx) { return visitChildren(ctx); }
+	@Override public Object visitSinalizador(FortallParser.SinalizadorContext ctx) {
+		Integer valor = (Integer) visitValor(ctx.valor());
+		if (ctx.MENOS() != null) {
+			return valor * -1;
+		}
+		return valor;
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public Object visitValor(FortallParser.ValorContext ctx) { return visitChildren(ctx); }
+	@Override public Object visitValor(FortallParser.ValorContext ctx) {
+		if (ctx.AP() != null) {
+			return visitAritmetica(ctx.aritmetica());
+		} else if (ctx.ID() != null) {
+			Variavel variavel = variaveis.get(ctx.ID().getText());
+			if (variavel == null) {
+				throw new RuntimeException("Variável \"" + ctx.ID().getText() + "\"");
+			}
+			return variavel.getValor();
+		} else {
+			return Integer.parseInt(ctx.NUM().getText());
+		}
+	}
+
+	private Boolean resolveRelacao(FortallParser.RelacaoContext ctx, Integer valorAnterior) {
+		if (ctx.aritmetica() != null) {
+			Integer valor = (Integer) visitAritmetica(ctx.aritmetica());
+			if (ctx.EQ() != null) {
+				return valorAnterior.equals(valor);
+			} else if (ctx.NE() != null) {
+				return !valorAnterior.equals(valor);
+			} else if (ctx.GE() != null) {
+				return valorAnterior >= valor;
+			} else if (ctx.GT() != null) {
+				return valorAnterior > valor;
+			} else if (ctx.LE() != null) {
+				return valorAnterior <= valor;
+			} else if (ctx.LT() != null) {
+				return valorAnterior < valor;
+			}
+ 		}
+		throw new RuntimeException("Estranho");
+	}
+
+	private Integer resolveFator(FortallParser.FatorContext ctx, Integer valorAnterior) {
+		if (ctx.DIV() != null) {
+			Integer valor = (Integer) visitSinalizador(ctx.sinalizador());
+			if (ctx.fator() != null) {
+				return resolveFator(ctx.fator(), valorAnterior / valor);
+			}
+			return valor / valorAnterior;
+		} else if (ctx.MULT() != null) {
+			Integer valor = (Integer) visitSinalizador(ctx.sinalizador());
+			if (ctx.fator() != null) {
+				return resolveFator(ctx.fator(), valorAnterior * valor);
+			}
+			return valor * valorAnterior;
+		}
+		return valorAnterior;
+	}
+
+	private Integer resolveTermo(FortallParser.TermoContext ctx, Integer valorAnterior) {
+		if (ctx.MAIS() != null) {
+			Integer valor = (Integer) visitPrecedente(ctx.precedente());
+			if (ctx.termo() != null) {
+				return resolveTermo(ctx.termo(), valorAnterior + valor);
+			}
+			return valor + valorAnterior;
+		} else if (ctx.MENOS() != null) {
+			Integer valor = (Integer) visitPrecedente(ctx.precedente());
+			if (ctx.termo() != null) {
+				return resolveTermo(ctx.termo(), valorAnterior - valor);
+			}
+			return valor - valorAnterior;
+		}
+		return valorAnterior;
+	}
+
+	@Override
+	public Object visitExpressao_aritmetica(FortallParser.Expressao_aritmeticaContext ctx) {
+		Integer valor = (Integer) visitAritmetica(ctx.aritmetica());
+		if (ctx.fator() != null) {
+			return resolveFator(ctx.fator(), valor);
+		}
+		return valor;
+	}
+
+	@Override
+	public Object visitValor_string(FortallParser.Valor_stringContext ctx) {
+		if (ctx.expressao() != null) {
+			return visitExpressao(ctx.expressao()).toString();
+		} else {
+			return ctx.STRING().getText().substring(1, ctx.STRING().getText().length() -1);
+		}
+	}
 }
