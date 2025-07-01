@@ -1,0 +1,21 @@
+programa isEven;
+var numero, i: inteiro; even: lógico;
+início
+    escrever("Insira número: ");
+    ler(numero);
+    even := verdadeiro;
+    i := 0;
+    enquanto i < numero faça
+        se even então
+            even := falso;
+        senão
+            even := verdadeiro;
+        fim;
+        i := i + 1;
+    fim;
+    se even então
+        escrever(numero, " é par\n");
+    senão
+        escrever(numero, " é ímpar\n");
+    fim;
+fim;

@@ -1,0 +1,17 @@
+programa matrizQuadrada;
+var i, j, tamanho: inteiro;
+/* Esse programa printa uma matriz com números de 1 a tamanho^2 */
+início
+    escrever("tamanho da matriz: ");
+    ler(tamanho);
+    i := 0;
+    enquanto i < tamanho faça
+        j := 0;
+        enquanto j < tamanho faça
+            escrever(1 + (i * tamanho + j), " ");
+            j := j + 1;
+        fim;
+        escrever("\n");
+        i := i + 1;
+    fim;
+fim

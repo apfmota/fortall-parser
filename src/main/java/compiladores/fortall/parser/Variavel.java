@@ -1,5 +1,7 @@
 package compiladores.fortall.parser;
 
+import java.util.Scanner;
+
 public class Variavel {
 
     private Object valor;
@@ -25,5 +27,21 @@ public class Variavel {
 
     public void setValor(Object valor) {
         this.valor = valor;
+    }
+
+    public void ler(Scanner scanner) {
+        //REFATORAR
+        if (tipo.equals("inteiro")) {
+            this.valor = scanner.nextInt();
+        } else if (tipo.equals("lógico")) {
+            String valor = scanner.next();
+            if (valor.equalsIgnoreCase("verdadeiro") || valor.equalsIgnoreCase("falso")) {
+                this.valor = valor.equalsIgnoreCase("verdadeiro");
+            } else {
+                throw new RuntimeException("Valor lógico inválido: " + valor);
+            }
+        } else {
+            throw new RuntimeException("Tipo de variável desconhecido: " + tipo);
+        }
     }
 }

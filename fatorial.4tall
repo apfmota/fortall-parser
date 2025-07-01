@@ -1,0 +1,13 @@
+programa fatorial;
+var numero, total, numeroCopia, i: inteiro;
+início
+    escrever("Insira um número: ");
+    ler(numero);
+    total := 1;
+    i := 1;
+    enquanto i <= numero faça
+        total := total * i;
+        i := i + 1;
+    fim;
+    escrever("fatorial de ", numero, " = ", total, "\n");
+fim

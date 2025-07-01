@@ -13,14 +13,23 @@ public class App {
             FortallLexer lexer = new FortallLexer(CharStreams.fromPath(Paths.get(args[0]), StandardCharsets.UTF_8));
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             FortallParser parser = new FortallParser(tokens);
+            
+            parser.removeErrorListeners();
+            FortallErrorListener fortallErrorListener = new FortallErrorListener();
+            parser.addErrorListener(fortallErrorListener);
             ParseTree tree = parser.programa();
 
-            FortallVisitor_V1 fortallVisitorV1 = new FortallVisitor_V1(System.in);
-
-            try {
-                fortallVisitorV1.visit(tree);
-            } catch (RuntimeException runtimeException) {
-                System.out.println("Erro ao executar: " + runtimeException.getMessage());
+            if (fortallErrorListener.getErros().isEmpty()) {
+                FortallVisitorImpl fortallVisitorV1 = new FortallVisitorImpl(System.in);
+                try {
+                    fortallVisitorV1.visit(tree);
+                } catch (RuntimeException runtimeException) {
+                    System.out.println("Erro ao executar: " + runtimeException.getMessage());
+                }
+            } else {
+                for (String erro: fortallErrorListener.getErros()) {
+                    System.out.println(erro);
+                }
             }
         } else {
             System.out.println("Informe nome do arquivo contendo código fonte em fortall");

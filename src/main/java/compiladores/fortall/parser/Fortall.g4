@@ -32,7 +32,8 @@ mais_valores_string : VR valores_string
     |
     ;
 leitura : LER AP ids FP ;
-atribuicao : ID ATR expressao ;
+atribuicao : ID ATR expressao
+    | ID ATR BOOLEANO ;
 se : SE expressao ENTAO comandos senao FIM ;
 senao : SENAO se
     | SENAO comandos
@@ -100,6 +101,7 @@ MAIS : '+' ;
 MENOS : '-' ;
 MULT : '*' ;
 DIV : '/' ;
+BOOLEANO : 'verdadeiro' | 'falso' ;
 
 // tokens variaveis
 
@@ -109,3 +111,4 @@ NUM : [0-9]+ ;
 
 // ignorando whitespaces
 WS : [ \t\r\n]+ -> skip ;
+COMENTARIO: '/*' .*? '*/' -> skip ;
