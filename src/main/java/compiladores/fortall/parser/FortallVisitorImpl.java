@@ -38,7 +38,7 @@ public class FortallVisitorImpl extends FortallBaseVisitor<Object> {
 			if (!variaveis.containsKey(id)) {
 				variaveis.put(id, new Variavel(id, tipo));
 			} else {
-				throw new RuntimeException("Variável \"" + id + "\" declarada. Linha " + ctx.start.getLine());
+				throw new RuntimeException("Variável já \"" + id + "\" declarada. Linha " + ctx.start.getLine());
 			}
 		}
 	 	visitMais_variaveis(ctx.mais_variaveis());

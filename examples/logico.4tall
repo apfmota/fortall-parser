@@ -1,0 +1,22 @@
+programa sobeDesce;
+var limite, atual: inteiro; subindo: lógico;
+início
+    escrever("Digite o limite da contagem: ");
+    ler(limite);
+    atual := 1;
+    subindo := verdadeiro;
+
+    enquanto atual >= 1 faça
+        escrever(atual, "\n");
+
+        se subindo então
+            atual := atual + 1;
+            se atual > limite então
+                subindo := falso;
+                atual := limite - 1;
+            fim;
+        senão
+            atual := atual - 1;
+        fim;
+    fim;
+fim;

@@ -10,12 +10,14 @@ import java.nio.file.Paths;
 public class App {
     public static void main(String[] args) throws Exception {
         if (args.length > 0) {
+            FortallErrorListener fortallErrorListener = new FortallErrorListener();
             FortallLexer lexer = new FortallLexer(CharStreams.fromPath(Paths.get(args[0]), StandardCharsets.UTF_8));
+            lexer.removeErrorListeners();
+            lexer.addErrorListener(fortallErrorListener);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             FortallParser parser = new FortallParser(tokens);
             
             parser.removeErrorListeners();
-            FortallErrorListener fortallErrorListener = new FortallErrorListener();
             parser.addErrorListener(fortallErrorListener);
             ParseTree tree = parser.programa();
 
