@@ -1,0 +1,26 @@
+programa moldura;
+var tamanho, linha, coluna: inteiro;
+início
+    escrever("Digite o tamanho da moldura: ");
+    ler(tamanho);
+    linha := 1;
+    enquanto linha <= tamanho faça
+        coluna := 1;
+        enquanto coluna <= tamanho faça
+            se linha = 1 então
+                escrever("*");
+            senão se linha = tamanho então
+                escrever("*");
+            senão se coluna = 1 então
+                escrever("*");
+            senão se coluna = tamanho então
+                escrever("*");
+            senão
+                escrever(" ");
+            fim; fim; fim; fim;
+            coluna := coluna + 1;
+        fim;
+        escrever("\n");
+        linha := linha + 1;
+    fim;
+fim;

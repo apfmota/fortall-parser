@@ -1,0 +1,16 @@
+programa triangulo;
+var altura, linha, coluna: inteiro;
+início
+    escrever("Digite a altura do triângulo: ");
+    ler(altura);
+    linha := 1;
+    enquanto linha <= altura faça
+        coluna := 1;
+        enquanto coluna <= linha faça
+            escrever("*");
+            coluna := coluna + 1;
+        fim;
+        escrever("\n");
+        linha := linha + 1;
+    fim;
+fim;

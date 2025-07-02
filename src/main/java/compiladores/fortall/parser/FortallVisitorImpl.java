@@ -163,7 +163,7 @@ public class FortallVisitorImpl extends FortallBaseVisitor<Object> {
 	
 	@Override public Object visitLoop(FortallParser.LoopContext ctx) {
 		Integer resultadoExpressao = (Integer) visitExpressao(ctx.expressao());
-		while (resultadoExpressao == 1) {
+		while (resultadoExpressao != 0) {
 			visitComandos(ctx.comandos());
 			resultadoExpressao = (Integer) visitExpressao(ctx.expressao());
 		}
