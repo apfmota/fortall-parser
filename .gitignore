@@ -1,0 +1,11 @@
+# Ignore all JAR files
+*.jar
+
+# Ignore everything inside /target
+/target/
+
+# Ignore Maven shade plugin output
+dependency-reduced-pom.xml
+
+# Ignore VS Code settings
+.vscode/

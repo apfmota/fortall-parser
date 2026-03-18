@@ -4,11 +4,17 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
 public class App {
     public static void main(String[] args) throws Exception {
+        main(args, System.in, System.out);
+    }
+    
+    public static void main(String[] args, InputStream is, OutputStream os) throws Exception {
         if (args.length > 0) {
             FortallErrorListener fortallErrorListener = new FortallErrorListener();
             FortallLexer lexer = new FortallLexer(CharStreams.fromPath(Paths.get(args[0]), StandardCharsets.UTF_8));
@@ -22,7 +28,7 @@ public class App {
             ParseTree tree = parser.programa();
 
             if (fortallErrorListener.getErros().isEmpty()) {
-                FortallVisitorImpl fortallVisitorV1 = new FortallVisitorImpl(System.in);
+                FortallVisitorImpl fortallVisitorV1 = new FortallVisitorImpl(is, os);
                 try {
                     fortallVisitorV1.visit(tree);
                 } catch (RuntimeException runtimeException) {

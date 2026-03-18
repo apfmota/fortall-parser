@@ -3,7 +3,13 @@ package compiladores.fortall.parser;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.*;
 
 @SuppressWarnings("CheckReturnValue")
@@ -11,9 +17,11 @@ public class FortallVisitorImpl extends FortallBaseVisitor<Object> {
 
 	private Map<String, Variavel> variaveis = new HashMap<>();
 	private final Scanner scanner;
+	private final OutputStreamWriter writer;
 
-	public FortallVisitorImpl (InputStream inputStream) {
+	public FortallVisitorImpl (InputStream inputStream, OutputStream outputStream) {
 		scanner = new Scanner(inputStream);
+		writer = new OutputStreamWriter(outputStream);
 	}
 
 	@Override public Object visitPrograma(FortallParser.ProgramaContext ctx) {
@@ -78,9 +86,14 @@ public class FortallVisitorImpl extends FortallBaseVisitor<Object> {
 	@Override public Object visitComando(FortallParser.ComandoContext ctx) { return visitChildren(ctx); }
 	
 	@Override public Object visitEscrita(FortallParser.EscritaContext ctx) {
-		List<String> valores = (List<String>) visitValores_string(ctx.valores_string());
-		for (String valor: valores) {
-			System.out.print(StringEscapeUtils.unescapeJava(valor));
+		try {
+			List<String> valores = (List<String>) visitValores_string(ctx.valores_string());
+			for (String valor: valores) {
+				writer.write(StringEscapeUtils.unescapeJava(valor));
+				writer.flush();
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("Problema ao escrever");
 		}
 		return null;
 	}
